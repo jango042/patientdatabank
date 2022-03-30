@@ -1,9 +1,11 @@
 package com.jango.patientdatabank.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.jango.patientdatabank.abstracts.AbstractTest;
 import com.jango.patientdatabank.model.Staff;
+import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -37,9 +39,11 @@ public class ControllerTest extends AbstractTest {
         .contentType(MediaType.APPLICATION_JSON_VALUE)
         .content(inputJson)).andReturn();
     int status = mvcResult.getResponse().getStatus();
-    assertEquals(200, status);
-//    String content = mvcResult.getResponse().getContentAsString();
-//    assertEquals(content, "Saved Successfully");
+    assertEquals(201, status);
+    String content = mvcResult.getResponse().getContentType();
+    String body = mvcResult.getResponse().getContentAsString();
+    assertEquals(content, "application/json");
+    assertNotNull(body);
   }
 
 }
