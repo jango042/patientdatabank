@@ -26,7 +26,7 @@ public class CsvHelper {
   private PatientRepository patientRepository;
 
 
-  public void writeEmployeesToCsv(Writer writer, String uuid, Long patientId) {
+  public void writePatientProfileToCsv(Writer writer, String uuid, Long patientId) {
 
     if (utill.checkSfaffByUUID(uuid)) {
       Optional<Patient> patient = patientRepository.findById(patientId);

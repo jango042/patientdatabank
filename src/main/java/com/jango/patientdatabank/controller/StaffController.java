@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,10 +60,10 @@ public class StaffController {
 
   @ApiOperation(value = "Download Patient Profile via csv", notes = "Download Patient Profile via csv")
   @GetMapping(path = "/staff/{uuid}/patient/{patientId}/download")
-  public void getAllEmployeesInCsv(HttpServletResponse servletResponse, @PathVariable("uuid") String uuid, @PathVariable("patientId") Long patientId) throws IOException {
+  public void getPatientProfileInCsv(HttpServletResponse servletResponse, @PathVariable("uuid") String uuid, @PathVariable("patientId") Long patientId) throws IOException {
     servletResponse.setContentType("text/csv");
     servletResponse.addHeader("Content-Disposition","attachment; filename=\"patient.csv\"");
-    csvHelper.writeEmployeesToCsv(servletResponse.getWriter(), uuid, patientId);
+    csvHelper.writePatientProfileToCsv(servletResponse.getWriter(), uuid, patientId);
   }
 
   @ApiOperation(value = "Delete list of Patients between two age range", notes = "Delete list of Patients between two age range")
