@@ -2,6 +2,7 @@ package com.jango.patientdatabank.controller;
 
 import com.jango.patientdatabank.pojo.Response;
 import com.jango.patientdatabank.pojo.StaffPojo;
+import com.jango.patientdatabank.pojo.StaffUpdatePojo;
 import com.jango.patientdatabank.service.PatientService;
 import com.jango.patientdatabank.service.StaffService;
 import com.jango.patientdatabank.util.CsvHelper;
@@ -39,35 +40,23 @@ public class StaffController {
   @PostMapping("/staff")
   public ResponseEntity<Response> createStaff(@RequestBody StaffPojo staffPojo) {
 
-    Response response = staffService.createStaff(staffPojo);
-    if (!response.getStatus()) {
-      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    return staffService.createStaff(staffPojo);
+
   }
 
   @ApiOperation(value = "Update Staff Member Profile", notes = "Update Staff Member profile")
   @PutMapping("/staff")
-  public ResponseEntity<Response> updateStaffProfile(@RequestBody StaffPojo staffPojo) {
-    Response response = staffService.updateStaffProfile(staffPojo);
-    if (!response.getStatus()) {
-      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+  public ResponseEntity<Response> updateStaffProfile(@RequestBody StaffUpdatePojo staffPojo) {
+    return staffService.updateStaffProfile(staffPojo);
+
   }
 
   @ApiOperation(value = "Fetch Patient Profile up to 2 years", notes = "Fetch Patient Profile up to 2 years")
   @GetMapping("/staff/{uuid}/patient/{age}")
   public ResponseEntity<Response> findPatienceUptoTwoYears(@PathVariable("uuid") String uuid, @PathVariable("age") int age) {
 
-    Response response = patientService.findByAgeEqualTwoYears(uuid, age);
-    if (!response.getStatus()) {
-      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    return patientService.findByAgeEqualTwoYears(uuid, age);
+
   }
 
   @ApiOperation(value = "Download Patient Profile via csv", notes = "Download Patient Profile via csv")
@@ -82,12 +71,8 @@ public class StaffController {
   @DeleteMapping("/staff/{uuid}/patient/between/{age1}/{age2}")
   public ResponseEntity<Response> deletePatientsProfileBetweenAgeRange(@PathVariable("uuid") String uuid, @PathVariable("age1") int age1, @PathVariable("age2") int age2) {
 
-    Response response = patientService.deletePatientsBetweenTwoAgeRange(uuid,age1,age2);
-    if (!response.getStatus()) {
-      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    } else {
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    return patientService.deletePatientsBetweenTwoAgeRange(uuid,age1,age2);
+
   }
 
 }

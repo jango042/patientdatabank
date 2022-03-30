@@ -2,15 +2,20 @@ package com.jango.patientdatabank.service;
 
 import com.jango.patientdatabank.model.Patient;
 import com.jango.patientdatabank.model.Staff;
+import com.jango.patientdatabank.pojo.PatientResponse;
 import com.jango.patientdatabank.pojo.Response;
 import com.jango.patientdatabank.repository.PatientRepository;
 import com.jango.patientdatabank.repository.StaffRepository;
 import com.jango.patientdatabank.util.Utill;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +31,7 @@ public class PatientService {
   @Autowired
   private Utill utill;
 
-  public Response findByAgeEqualTwoYears(String uuid, int age) {
+  public ResponseEntity<Response> findByAgeEqualTwoYears(String uuid, int age) {
 
     log.info("UUid::::{}", uuid);
     if (staffRepository == null) {
@@ -36,38 +41,40 @@ public class PatientService {
     }
 
     if ( utill.checkSfaffByUUID(uuid)) {
-      return new Response.ResponseBuilder<>()
-          .data(patientRepository.findByAgeGreaterThanEqual(age))
-          .status(true)
+      List<PatientResponse> patientResponseList = new ArrayList<>();
+      for (Patient pt : patientRepository.findByAgeGreaterThanEqual(age)) {
+        PatientResponse patientResponse = new ModelMapper().map(pt, PatientResponse.class);
+        patientResponseList.add(patientResponse);
+      }
+      return new ResponseEntity<Response>(new Response.ResponseBuilder<>()
+          .data(patientResponseList)
           .message("Patient Records")
           .code(200)
-          .build();
+          .build(), HttpStatus.OK ) ;
+
     } else {
-      return new Response.ResponseBuilder<>()
-          .code(404)
-          .status(false)
+      return new ResponseEntity<Response>(new Response.ResponseBuilder<>()
           .message("UUID provided not found")
-          .build();
+          .code(404)
+          .build(), HttpStatus.NOT_FOUND);
     }
   }
 
-  public Response deletePatientsBetweenTwoAgeRange(String uuid, int age1, int age2) {
+  public ResponseEntity<Response> deletePatientsBetweenTwoAgeRange(String uuid, int age1, int age2) {
 
     if (utill.checkSfaffByUUID(uuid)) {
 //      List<Patient> patientList = patientRepository.findByAgeBetween(age1, age2);
       patientRepository.deleteAll(patientRepository.findByAgeBetween(age1, age2));
-      return new Response.ResponseBuilder<>()
-          .status(true)
+      return new ResponseEntity<Response>(new Response.ResponseBuilder<>()
           .message("Patient Records Deleted Successfully")
           .code(200)
-          .build();
+          .build(), HttpStatus.OK ) ;
 
     } else {
-      return new Response.ResponseBuilder<>()
-          .code(404)
-          .status(false)
+      return new ResponseEntity<Response>(new Response.ResponseBuilder<>()
           .message("UUID provided not found")
-          .build();
+          .code(404)
+          .build(), HttpStatus.NOT_FOUND);
     }
   }
 

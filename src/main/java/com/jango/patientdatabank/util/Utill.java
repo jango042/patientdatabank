@@ -12,7 +12,7 @@ public class Utill {
   private  StaffRepository staffRepository;
 
   public  boolean checkSfaffByUUID(String uuid) {
-    return staffRepository.findByUuid(UUID.fromString(uuid)).isPresent();
+    return staffRepository.findByUuid(uuid).isPresent();
   }
 
 }

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.jango.patientdatabank.abstracts.AbstractTest;
 import com.jango.patientdatabank.model.Staff;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +25,9 @@ public class ControllerTest extends AbstractTest {
   public void createStaff() throws Exception {
     String uri = "/staff";
     UUID uuid = UUID.randomUUID();
-    LocalDate date = LocalDate.now();
+    LocalDateTime date = LocalDateTime.now();
     Staff staff = new Staff();
-    staff.setUuid(uuid);
+    staff.setUuid(uuid.toString());
     staff.setName("Test");
     staff.setRegistrationDate(date);
     staff.setId(1L);

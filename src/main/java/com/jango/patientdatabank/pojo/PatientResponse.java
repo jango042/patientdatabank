@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StaffPojo {
-
+public class PatientResponse {
   private Long id;
   private String name;
-
+  private int age;
+  private String lastVisitDate;
 }

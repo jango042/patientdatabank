@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StaffPojo {
+public class StaffUpdatePojo {
 
-  private Long id;
+  private String uuid;
   private String name;
+  private Long id;
 
 }
